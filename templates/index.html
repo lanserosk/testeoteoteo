@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SuperMath</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <aside class="side">
+    <div class="brand">∑ SuperMath</div>
+    <nav id="nav"></nav>
+  </aside>
+
+  <main>
+    <h1 id="mod-title"></h1>
+
+    <section class="card">
+      <div class="row">
+        <label class="grow">Operación
+          <select id="op"></select>
+        </label>
+      </div>
+
+      <label>Expresión
+        <textarea id="expr" rows="2" spellcheck="false" autocomplete="off"></textarea>
+      </label>
+      <div class="hint">Enter = calcular · Shift+Enter = nueva línea (o separa con «;»). Usa <code>^</code> para potencias, <code>pi</code>, <code>oo</code>, <code>sqrt()</code>, <code>2x</code> = 2·x.</div>
+      <div class="symbols" id="symbols"></div>
+
+      <div class="row fields">
+        <label data-for="resolver derivada limite indefinida definida">Variable (opcional)
+          <input id="var" placeholder="auto" spellcheck="false">
+        </label>
+        <label data-for="derivada">Orden
+          <input id="order" type="number" min="1" max="10" value="1">
+        </label>
+        <label data-for="limite">Cuando la variable tiende a
+          <input id="point" value="0" spellcheck="false">
+        </label>
+        <label data-for="limite">Por
+          <select id="dir">
+            <option value="+-">ambos lados</option>
+            <option value="+">derecha (+)</option>
+            <option value="-">izquierda (−)</option>
+          </select>
+        </label>
+        <label data-for="parcial" class="grow">Derivar respecto a (en orden, separadas por coma)
+          <input id="vars" value="x, y" spellcheck="false">
+        </label>
+        <label data-for="definida">Límite inferior a
+          <input id="a" value="0" spellcheck="false">
+        </label>
+        <label data-for="definida">Límite superior b
+          <input id="b" value="1" spellcheck="false">
+        </label>
+      </div>
+
+      <div class="fields" data-for="multiple">
+        <label>Límites de integración — una línea por integral: <code>variable, desde, hasta</code>
+          <textarea id="limits" rows="3" spellcheck="false">x, 0, 1
+y, 0, x</textarea>
+        </label>
+        <div class="order-note">
+          <strong>Orden (notación estándar):</strong> de <em>afuera hacia adentro</em>.
+          La <strong>1ª línea</strong> es la integral más externa (el signo ∫ más a la izquierda, se resuelve al final).
+          La <strong>última línea</strong> es la más interna (se resuelve primero, es el primer diferencial escrito).
+          Los límites de una integral solo pueden depender de variables más externas.
+          Ej.: ∫₀¹∫₀ˣ xy dy dx → <code>x, 0, 1</code> y luego <code>y, 0, x</code>.
+        </div>
+      </div>
+
+      <div class="preview-wrap">
+        <div class="label">Vista previa</div>
+        <div id="preview" class="preview"></div>
+      </div>
+
+      <div class="row actions">
+        <button id="go" class="primary">Calcular</button>
+        <div class="examples"><span class="label">Ejemplos:</span> <span id="examples"></span></div>
+      </div>
+    </section>
+
+    <section id="error" class="card error" hidden></section>
+
+    <section id="out" class="card" hidden>
+      <div class="label">Planteamiento</div>
+      <div id="res-problem" class="math"></div>
+      <div class="label">Resultado</div>
+      <div id="res-result" class="math big"></div>
+      <div id="approx-wrap" hidden>
+        <button id="approx-btn" class="ghost">Ver valor decimal aproximado</button>
+        <div id="res-approx" class="math" hidden></div>
+      </div>
+    </section>
+
+    <section id="plot-card" class="card" hidden>
+      <div class="label">Gráfica</div>
+      <div id="plot"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
